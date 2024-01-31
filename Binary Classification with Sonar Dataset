@@ -30,3 +30,9 @@ def create_baseline():
     #compile model
     model.compile(loss = 'binary_crossentropy', optimize = 'adam', metrics=['accuracy'])
     return model 
+
+# evaluate model with standardized dataset
+estimator = KerasClassifier(model=create_baseline, epochs=100, batch_size=5, verbose=0)
+kfold = StratifiedKFold(n_splits=10, shuffle=True)
+results = cross_val_score(estimator, X, encoded_Y, cv=kfold)
+print("Baseline: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
