@@ -76,9 +76,24 @@ Adds the output layer with a single neuron, suitable for binary classification. 
    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 Configures the model for training with binary crossentropy loss, Adam optimizer, and accuracy as the evaluation metric.
 
+## Model Evaluation with Stratified k-fold Cross Validation
 
+1. **Estimator Configuration:**
+   ```python 
+   estimator = KerasClassifier(model=create_baseline, epochs=100, batch_size=5, verbose=0)
+- `epochs`: defines the number of training epochs.
+- `batch_size` : sets the batch size of each training iteration. 
+- `verbose=0`: Suppresses verbose output during training.
 
-  
-   
+2. **Cross Validation Setup:**
+   ```python
+   kfold = StratifiedKFold(n_splits=10, shuffle=True)
+- Employs StratifiedKFold to split the data into 10 folds.
+- shuffle=True: Ensures a random shuffling of the data before splitting.
 
-   
+### Model Evaluation
+      ```python
+      results = cross_val_score(estimator, X, encoded_Y, cv=kfold)
+- `X`: Input features.
+- `encoded_Y`: Numerically encoded class labels.
+- `cv=kfold`: Specifies the cross-validation strategy.
