@@ -8,6 +8,20 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
+from ucimlrepo import fetch_ucirepo 
+  
+# fetch dataset 
+connectionist_bench_sonar_mines_vs_rocks = fetch_ucirepo(id=151) 
+  
+# data (as pandas dataframes) 
+X = connectionist_bench_sonar_mines_vs_rocks.data.features 
+y = connectionist_bench_sonar_mines_vs_rocks.data.targets 
+  
+# metadata 
+print(connectionist_bench_sonar_mines_vs_rocks.metadata) 
+  
+# variable information 
+print(connectionist_bench_sonar_mines_vs_rocks.variables) 
 
 #load dataset
 dataframe = pd.read_csv("sonar.csv", header = None)
@@ -34,5 +48,5 @@ def create_baseline():
 # evaluate model with standardized dataset
 estimator = KerasClassifier(model=create_baseline, epochs=100, batch_size=5, verbose=0)
 kfold = StratifiedKFold(n_splits=10, shuffle=True)
-results = cross_val_score(estimator, X, encoded_Y, cv=kfold)
+results = cross_val_score(estimator, x, encoded_y, cv=kfold)
 print("Baseline: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
